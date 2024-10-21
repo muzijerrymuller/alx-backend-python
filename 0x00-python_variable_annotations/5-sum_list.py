@@ -15,8 +15,8 @@ def sum_list(input_list: List[float]) -> float:
     is returned as a floating-point number.
 
     Args:
-        input_list (List[float]): A list of floating-point numbers to be summed.
-                                   The list can contain zero or more float values.
+        input_list (List[float]): A list of floating-point numbers to be sumed
+                                   The list can contain zero or more float val
 
     Returns:
         float: The sum of the floating-point numbers in the input list. If the
