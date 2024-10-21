@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import math
-"""
+'''
 Module to provide a function for
 calculating the floor of a float number.
-"""
+'''
 
 
 def floor(n: float) -> int:
