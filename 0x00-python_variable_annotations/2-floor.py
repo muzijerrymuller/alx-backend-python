@@ -2,7 +2,9 @@
 
 import math
 
-# Function to return the floor of the given float number
+"""
+Function to return the floor of the given float number
+"""
 
 
 def floor(n: float) -> int:
