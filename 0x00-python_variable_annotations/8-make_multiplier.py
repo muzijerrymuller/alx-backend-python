@@ -25,5 +25,4 @@ def make_multiplier(multiplier: float) -> Callable[[float], float]:
             float: The product of value and the multiplier.
         """
         return value * multiplier
-    
     return multiplier_function
