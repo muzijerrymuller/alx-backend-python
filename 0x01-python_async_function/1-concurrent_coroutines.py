@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 This module defines an async function `wait_n`, which runs `wait_random`
 a specified number of times with a maximum delay.
