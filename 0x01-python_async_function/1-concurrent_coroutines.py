@@ -7,7 +7,7 @@ a specified number of times with a maximum delay.
 import asyncio
 from typing import List
 
-from previous_file import wait_random
+from 0-basic_async_syntax.py import wait_random
 
 async def wait_n(n: int, max_delay: int) -> List[float]:
     """
