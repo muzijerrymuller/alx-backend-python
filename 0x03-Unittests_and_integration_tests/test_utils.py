@@ -58,9 +58,7 @@ class TestAccessNestedMap(unittest.TestCase):
         This test case evaluates whether the function returns the expected 
         values when provided with correctly structured input.
         """
-        with self.assertRaises(exception):
-            access_nested_map(nested_map, path)
-        self.assertEqual(type(exc.exception), exception)
+        self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
         ({}, ("a",), KeyError),
