@@ -60,6 +60,7 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(exception):
             access_nested_map(nested_map, path)
+        self.assertEqual(type(exc.exception), exception)
 
     @parameterized.expand([
         ({}, ("a",), KeyError),
