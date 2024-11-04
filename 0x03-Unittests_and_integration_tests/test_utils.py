@@ -53,12 +53,13 @@ class TestAccessNestedMap(unittest.TestCase):
     ])
     def test_access_nested_map(
         self, nested_map: Dict, path: Tuple[str], expected: Union[Dict, int]
-        ) -> None:
+    ) -> None:
         """Tests the output of `access_nested_map` for valid paths.
         This test case evaluates whether the function returns the expected 
         values when provided with correctly structured input.
         """
-        self.assertEqual(access_nested_map(nested_map, path), expected)
+        with self.assertRaises(exception):
+            access_nested_map(nested_map, path)
 
     @parameterized.expand([
         ({}, ("a",), KeyError),
