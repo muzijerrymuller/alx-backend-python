@@ -26,8 +26,8 @@ facilitate code maintenance, and support the ongoing
 development of a high-quality software product.
 """
 import unittest
-from typing import Dict, Tuple, Union
-from unittest.mock import patch, Mock
+from typing import Dict, Tuple, Union, Mapping, Sequence
+from unittest.mock import Mock, patch
 from parameterized import parameterized
 
 from utils import (
