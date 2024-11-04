@@ -4,11 +4,13 @@ This module contains unit tests for the `access_nested_map` function from
 the `utils` module. The tests verify that the function correctly retrieves
 values from a nested dictionary using a specified path of keys.
 """
-
-
 import unittest
+import requests
+from unittest.mock import patch
+from utils import access_nested_map, get_json, memoize
+from typing import Mapping, Sequence, Any
 from parameterized import parameterized
-from utils import access_nested_map
+
 
 class TestAccessNestedMap(unittest.TestCase):
     """
