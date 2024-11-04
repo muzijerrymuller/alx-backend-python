@@ -8,7 +8,6 @@ It contains the following function:
 """
 import asyncio
 import random
-from 0-basic_async_syntax.py import wait_random
 
 
 async def wait_random(max_delay: int = 10) -> float:
