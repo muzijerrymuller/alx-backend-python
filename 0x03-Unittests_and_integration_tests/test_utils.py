@@ -40,9 +40,9 @@ from utils import (
 
 class TestAccessNestedMap(unittest.TestCase):
     """Tests the functionality of the `access_nested_map` function.
-    This class encompasses a series of unit tests that validate the behavior 
-    of the `access_nested_map` function. It ensures that the function accurately 
-    retrieves values from nested dictionaries for valid paths and appropriately 
+    This class encompasses a series of unit tests that validate the behavior
+    of the `access_nested_map` function. It ensures that the function accurately
+    retrieves values from nested dictionaries for valid paths and appropriately
     raises exceptions for invalid access attempts.
     """
 
@@ -51,7 +51,9 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map: Dict, path: Tuple[str], expected: Union[Dict, int]) -> None:
+    def test_access_nested_map(
+        self, nested_map: Dict, path: Tuple[str], expected: Union[Dict, int]
+        ) -> None:
         """Tests the output of `access_nested_map` for valid paths.
         This test case evaluates whether the function returns the expected 
         values when provided with correctly structured input.
