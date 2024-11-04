@@ -29,6 +29,7 @@ import unittest
 from typing import Dict, Tuple, Union
 from unittest.mock import patch, Mock
 from parameterized import parameterized
+
 from utils import (
     access_nested_map,
     get_json,
@@ -44,7 +45,7 @@ class TestAccessNestedMap(unittest.TestCase):
     retrieves values from nested dictionaries for valid paths and appropriately 
     raises exceptions for invalid access attempts.
     """
-    
+
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -76,7 +77,7 @@ class TestGetJson(unittest.TestCase):
     that it accurately fetches JSON data from specified URLs and handles
     network responses correctly.
     """
-    
+
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
@@ -98,7 +99,7 @@ class TestMemoize(unittest.TestCase):
     that it effectively caches the results of function calls, improving
     efficiency for repetitive calls with identical arguments.
     """
-    
+
     def test_memoize(self) -> None:
         """Tests the output of the `memoize` function for caching results.
         This test evaluates whether the `memoize` decorator correctly caches
@@ -112,7 +113,7 @@ class TestMemoize(unittest.TestCase):
             @memoize
             def a_property(self):
                 return self.a_method()
-        
+
         with patch.object(TestClass, "a_method", return_value=lambda: 42) as memo_fxn:
             test_class = TestClass()
             self.assertEqual(test_class.a_property(), 42)
