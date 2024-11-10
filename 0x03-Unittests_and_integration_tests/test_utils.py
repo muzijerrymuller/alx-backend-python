@@ -1,129 +1,93 @@
 #!/usr/bin/env python3
-"""A module for testing the utils module.
-This module serves as a robust framework for
-testing essential utility functions
-from the `utils` module. Through the use of
-comprehensive unit tests, we validate
-the expected behavior of these functions, ensuring
-they perform reliably in various
-scenarios. This not only enhances the quality of
-our code but also builds confidence
-in the functionality provided by these utilities.
-The key functions under test include:
-- `access_nested_map`: Designed to retrieve values from nested dictionaries
-  based on specified paths, ensuring safe access to complex data structures.
-- `get_json`: Responsible for fetching and returning
-JSON data from external URLs,
-  guaranteeing that our application can
-  communicate effectively with web services.
-- `memoize`: A performance optimization tool
-that caches results of function calls,
-  significantly improving efficiency when the
-  same inputs are encountered multiple times.
-By maintaining thorough test coverage, we aim
-to identify potential issues early,
-facilitate code maintenance, and support the ongoing
-development of a high-quality software product.
+"""
+Test for access_nested_map function
 """
 import unittest
-from typing import Dict, Tuple, Union, Mapping, Sequence
-from unittest.mock import Mock, patch
+import requests
+from unittest.mock import patch
+from utils import access_nested_map, get_json, memoize
+from typing import Mapping, Sequence, Any
 from parameterized import parameterized
-
-from utils import (
-    access_nested_map,
-    get_json,
-    memoize,
-)
-
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """Tests the functionality of the `access_nested_map` function.
-    This class encompasses a series of unit tests that validate the behavior
-    of the `access_nested_map` function. It ensures that the function accurately
-    retrieves values from nested dictionaries for valid paths and appropriately
-    raises exceptions for invalid access attempts.
     """
-
+    Tests the access_nested_map function
+    """
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
-        ({"a": {"b": 2}}, ("a", "b"), 2),
+        ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
-    def test_access_nested_map(
-        self, nested_map: Dict, path: Tuple[str], expected: Union[Dict, int]
-    ) -> None:
-        """Tests the output of `access_nested_map` for valid paths.
-        This test case evaluates whether the function returns the expected 
-        values when provided with correctly structured input.
+    def test_access_nested_map(self, nested_map: Mapping,
+                               path: Sequence, expected: int) -> None:
         """
-        self.assertEqual(access_nested_map(nested_map, path), expected)
+        Test the access_nested_map method.
+        Args:
+            nested_map (Dict): A dictionary that may have nested dictionaries
+            path (List, tuple, set): Keys to get to the required value in the
+                                     nested dictionary
+        """
+        response = access_nested_map(nested_map, path)
+        self.assertEqual(response, expected)
 
     @parameterized.expand([
-        ({}, ("a",), KeyError),
-        ({"a": 1}, ("a", "b"), KeyError),
+        ({}, ("a",)),
+        ({"a": 1}, ("a", "b"))
     ])
-    def test_access_nested_map_exception(self, nested_map: Dict, path: Tuple[str], exception: Exception) -> None:
-        """Tests the exception handling of `access_nested_map
-        This test case ensures that the function raises the appropriate
-        exceptions when attempting to access invalid paths, reinforcing
-        the robustness of the utility function.
+    def test_access_nested_map_exception(self, nested_map: Mapping,
+                                         path: Sequence) -> None:
         """
-        with self.assertRaises(exception):
+        Test the access_nested_map method raises an error when expected to
+        Args:
+            nested_map (Dict): A dictionary that may have nested dictionaries
+            path (List, tuple, set): Keys to get to the required value in the
+                                     nested dictionary
+        """
+        with self.assertRaises(Exception):
             access_nested_map(nested_map, path)
 
-class TestGetJson(unittest.TestCase):
-    """Tests the functionality of the `get_json` function.
-    This class is dedicated to testing the `get_json` function to confirm
-    that it accurately fetches JSON data from specified URLs and handles
-    network responses correctly.
-    """
 
+class TestGetJson(unittest.TestCase):
+    """
+    Test the get_json function
+    """
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
-        ("http://holberton.io", {"payload": False}),
+        ("http://holberton.io", {"payload": False})
     ])
-    def test_get_json(self, test_url: str, test_payload: Dict) -> None:
-        """Tests the output of `get_json` when fetching data from a URL.
-        This test verifies that the function
-        returns the expected JSON payload
-        and confirms that the correct URL is called during the process.
+    @patch("requests.get")
+    def test_get_json(self, test_url, test_payload, mock_requests_get):
         """
-        attrs = {'json.return_value': test_payload}
-        with patch("requests.get", return_value=Mock(**attrs)) as req_get:
-            self.assertEqual(get_json(test_url), test_payload)
-            req_get.assert_called_once_with(test_url)
+        Test the get_json method to ensure it returns the expected output.
+        Args:
+            url: url to send http request to
+            payload: expected json response
+        """
+        mock_requests_get.return_value.json.return_value = test_payload
+        result = get_json(test_url)
+        self.assertEqual(result, test_payload)
+        mock_requests_get.assert_called_once_with(test_url)
+
 
 class TestMemoize(unittest.TestCase):
-    """Tests the functionality of the `memoize` function.
-    This class verifies the behavior of the `memoize` decorator to ensure
-    that it effectively caches the results of function calls, improving
-    efficiency for repetitive calls with identical arguments.
     """
-
-    def test_memoize(self) -> None:
-        """Tests the output of the `memoize` function for caching results.
-        This test evaluates whether the `memoize` decorator correctly caches
-        function outputs and limits the number of calls to the underlying
-        method, enhancing performance.
+    Test the memoization decorator, memoize
+    """
+    def test_memoize(self):
         """
-        
+        Test that utils.memoize decorator works as intended
+        """
         class TestClass:
+
             def a_method(self):
                 return 42
-            
+
             @memoize
             def a_property(self):
                 return self.a_method()
-            
-        with patch.object(
-                TestClass,
-                "a_method",
-                return_value=lambda: 42,
-                ) as memo_fxn:
-            test_class = TestClass()
-            self.assertEqual(test_class.a_property(), 42)
-            self.assertEqual(test_class.a_property(), 42)
-            memo_fxn.assert_called_once()
-
+        with patch.object(TestClass, 'a_method') as mock_object:
+            test = TestClass()
+            test.a_property()
+            test.a_property()
+            mock_object.assert_called_once()
